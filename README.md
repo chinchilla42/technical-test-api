@@ -6,7 +6,7 @@ Récupérez le code puis installez le projet :
 
 ```bash
 # Installation
-$ composer install
+$ ./composer.phar install
 
 # Lancement du serveur
 $ php -S 0.0.0.0:8000 -t public
