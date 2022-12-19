@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Entity\Project;
 use App\Service\ProjectManager;
@@ -19,16 +20,18 @@ class ProjectController extends AbstractController {
         $this->projectManager = $projectManager;
     }
 
+    public function index(SerializerInterface $serializer)
+    {
+
+    }
+
     /**
      * @Route("/projects", methods={"POST"})
      */
     public function postProject(Request $request): JsonResponse
     {
         $project = $this->projectManager->createProject();
-        $form = $this->createFormBuilder($project)
-            ->add('name', TextType::class)
-            ->add('slug', TextType::class)
-            ->getForm();
+        $form = $this->createForm($ArticleFormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->json($project->serialize());
