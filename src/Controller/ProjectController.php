@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use App\Entity\Project;
 use App\Service\ProjectManager;
+use App\Form\ProjectFormType;
 
 class ProjectController extends AbstractController {
 
@@ -20,11 +21,9 @@ class ProjectController extends AbstractController {
         $this->projectManager = $projectManager;
     }
 
-    
-
     public function index(SerializerInterface $serializer)
     {
-
+        $this->serializer = $serializer;
     }
 
     /**
@@ -36,9 +35,10 @@ class ProjectController extends AbstractController {
         $form = $this->createForm($FormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->json($project->serialize()); 
-            //to do: Modifiez la serialization
+            $data = $this->serializer->serialize($project, 'json');
+            return $this->json($data); 
         }
         return $this->json(["error" => "An error occured"]);
     }
+
 }
