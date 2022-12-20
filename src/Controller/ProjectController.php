@@ -20,6 +20,8 @@ class ProjectController extends AbstractController {
         $this->projectManager = $projectManager;
     }
 
+    
+
     public function index(SerializerInterface $serializer)
     {
 
@@ -31,10 +33,11 @@ class ProjectController extends AbstractController {
     public function postProject(Request $request): JsonResponse
     {
         $project = $this->projectManager->createProject();
-        $form = $this->createForm($ArticleFormType::class);
+        $form = $this->createForm($FormType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->json($project->serialize());
+            return $this->json($project->serialize()); 
+            //to do: Modifiez la serialization
         }
         return $this->json(["error" => "An error occured"]);
     }
